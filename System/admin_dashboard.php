@@ -121,22 +121,42 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
     <canvas id="appChart" height="100"></canvas>
 
     <script>
-    new Chart(document.getElementById("appChart"), {
-        type: 'bar',
-        data: {
-            labels: ["Approved", "Pending", "Rejected"],
-            datasets: [{
-                label: "Applications",
-                data: [
-                    <?php echo $approvedCount; ?>,
-                    <?php echo $pendingCount; ?>,
-                    <?php echo $rejectedCount; ?>
-                ],
-                backgroundColor: ["green", "orange", "red"]
-            }]
+new Chart(document.getElementById("appChart"), {
+    type: 'bar',
+    data: {
+        labels: ["Approved", "Pending", "Rejected"],
+        datasets: [{
+            label: "Applications",
+            data: [
+                <?php echo (int)$approvedCount; ?>,
+                <?php echo (int)$pendingCount; ?>,
+                <?php echo (int)$rejectedCount; ?>
+            ],
+            backgroundColor: ["green", "orange", "red"]
+        }]
+    },
+    options: {
+        animation: {
+            duration: 1500,
+            easing: 'easeOutBounce'
+        },
+        scales: {
+            y: {
+                beginAtZero: true,       // bars start at 0
+                suggestedMax: 50,        // ensures y-axis goes at least up to 50
+                ticks: {
+                    precision: 0
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
         }
-    });
-    </script>
+    }
+});
+</script>
 
     <br><br>
 
@@ -190,7 +210,6 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                     '<?php echo addslashes($row['school']); ?>',
                     '<?php echo addslashes($row['course']); ?>',
                     '<?php echo addslashes($row['essay']); ?>',
-                    '<?php echo addslashes($row['goals']); ?>'
                 )">View</a>
 
                 <a class="approve" href="?approve=<?php echo $row['id']; ?>">Approve</a>
@@ -221,19 +240,17 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
         <p><b>School:</b> <span id="m_school"></span></p>
         <p><b>Course:</b> <span id="m_course"></span></p>
         <p><b>Essay:</b> <span id="m_essay"></span></p>
-        <p><b>Goals:</b> <span id="m_goals"></span></p>
     </div>
 </div>
 
 <script>
-function openModal(name,email,school,course,essay,goals){
+function openModal(name,email,school,course,essay){
     document.getElementById("detailsModal").style.display="block";
     document.getElementById("m_name").innerText=name;
     document.getElementById("m_email").innerText=email;
     document.getElementById("m_school").innerText=school;
     document.getElementById("m_course").innerText=course;
     document.getElementById("m_essay").innerText=essay;
-    document.getElementById("m_goals").innerText=goals;
 }
 function closeModal(){
     document.getElementById("detailsModal").style.display="none";

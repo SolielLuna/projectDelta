@@ -32,12 +32,10 @@ if (!isset($_SESSION['user_id'])) {
         <input type="text" name="gpa" placeholder="GPA / GWA" required>
 
         <h3>3. Family & Financial Status</h3>
-        <input type="text" name="parent_occupation" placeholder="Parents' Occupation" required>
         <input type="text" name="family_income" placeholder="Family Income" required>
 
         <h3>4. Essay / Personal Statement</h3>
         <textarea name="essay" placeholder="Why you deserve the scholarship" required></textarea>
-        <textarea name="goals" placeholder="Your goals" required></textarea>
 
         <h3>5. Upload Documents</h3>
         <input type="file" name="document" required>

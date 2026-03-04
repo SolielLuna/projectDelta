@@ -166,12 +166,6 @@ table td {
     border-bottom: 1px solid #ddd;
 }
 
-.logout {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
-}
 .status-pending {
     color: orange;
     font-weight: bold;
@@ -306,4 +300,62 @@ table td {
 .main {
     margin-top: 90px;
     padding: 50px;
+}
+.actions {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* Apply Button */
+.apply {
+    background: #1976d2;
+    color: white;
+}
+
+.apply:hover {
+    background: #125aa0;
+}
+
+/* Logout */
+.logout {
+    background: #e53935;
+    color: white;
+}
+
+/* STATUS BUTTONS */
+.status {
+    cursor: not-allowed;
+}
+
+/* Pending */
+.pending {
+    background: #ff9800;
+    color: white;
+}
+
+/* Approved */
+.approved {
+    background: #4caf50;
+    color: white;
+}
+
+/* Rejected */
+.rejected {
+    background: #d32f2f;
+    color: white;
+}
+.logout:hover {
+    background: #c62828;
+    transform: translateY(-2px);
 }

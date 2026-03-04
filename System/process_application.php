@@ -16,11 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $year_level = $_POST['year_level'];
     $gpa = $_POST['gpa'];
 
-    $parent_occupation = $_POST['parent_occupation'];
     $family_income = $_POST['family_income'];
 
     $essay = $_POST['essay'];
-    $goals = $_POST['goals'];
 
     // File upload
     $file_name = $_FILES['document']['name'];
@@ -30,9 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     move_uploaded_file($temp_name, $folder);
 
     $sql = "INSERT INTO applications 
-    (user_id, fullname, contact, email, address, school, course, year_level, gpa, parent_occupation, family_income, essay, goals, document)
+    (user_id, fullname, contact, email, address, school, course, year_level, gpa, family_income, essay, document)
     VALUES 
-    ('$user_id','$fullname','$contact','$email','$address','$school','$course','$year_level','$gpa','$parent_occupation','$family_income','$essay','$goals','$file_name')";
+    ('$user_id','$fullname','$contact','$email','$address','$school','$course','$year_level','$gpa','$family_income','$essay','$file_name')";
 
     if ($conn->query($sql) === TRUE) {
         echo "<h2>Application Submitted Successfully!</h2>";

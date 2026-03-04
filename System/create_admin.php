@@ -2,7 +2,7 @@
 include "db.php";
 
 $email = "admin@example.com";
-$password = password_hash("AdminPass123", PASSWORD_DEFAULT); // hashed password
+$password = password_hash("admin123", PASSWORD_DEFAULT); // hashed password
 $fullname = "Super Admin";
 
 $sql = "INSERT INTO admins (email, password, fullname) VALUES ('$email', '$password', '$fullname')";
