@@ -50,7 +50,10 @@ body {
     background: white;
     padding: 25px;
     border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
+    border: 1px solid #bbdefb;
 }
+
 
 input {
     width: 100%;
@@ -364,13 +367,6 @@ table td {
    REGISTRATION FORM STYLES
    Compatible with existing style.css
    ============================================ */
-
-/* Form Container Enhancement */
-.container {
-    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
-    border: 1px solid #bbdefb;
-}
-
 .container h2 {
     color: #1976d2;
     text-align: center;
@@ -549,4 +545,32 @@ table td {
         right: 10px;
         min-width: auto;
     }
+}
+
+.profile-container {
+    width: 90%;              /* CHANGED from 350px */
+    max-width: 1200px;       /* allows full screen usage */
+    margin: 50px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+/* PROFILE GRID (NEW) */
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.profile-card {
+    background: #f5f9ff;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #1976d2;
+}
+
+.profile-card h3 {
+    margin-top: 0;
+    color: #1976d2;
 }
