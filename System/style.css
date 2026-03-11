@@ -359,3 +359,194 @@ table td {
     background: #c62828;
     transform: translateY(-2px);
 }
+
+/* ============================================
+   REGISTRATION FORM STYLES
+   Compatible with existing style.css
+   ============================================ */
+
+/* Form Container Enhancement */
+.container {
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
+    border: 1px solid #bbdefb;
+}
+
+.container h2 {
+    color: #1976d2;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #424242;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e3f2fd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.form-group input::placeholder {
+    color: #90a4ae;
+}
+
+/* Password Wrapper */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+/* Toggle Password Button */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    color: #64b5f6;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: #1976d2;
+    background: none; /* Override existing button hover */
+}
+
+.toggle-password svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Error Messages */
+.error-message {
+    display: none;
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.error-message.show {
+    display: block;
+}
+
+/* Form Footer */
+.form-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e3f2fd;
+    color: #616161;
+    font-size: 14px;
+}
+
+.form-footer a {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.form-footer a:hover {
+    color: #0d47a1;
+    text-decoration: underline;
+}
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 300px;
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    border-left: 4px solid;
+}
+
+.toast.error {
+    border-left-color: #d32f2f;
+}
+
+.toast.success {
+    border-left-color: #4caf50;
+}
+
+.toast-icon {
+    font-size: 24px;
+}
+
+.toast-content h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: #212121;
+}
+
+.toast-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #616161;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    
+    .toast {
+        left: 10px;
+        right: 10px;
+        min-width: auto;
+    }
+}
