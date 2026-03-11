@@ -1,15 +1,25 @@
 <?php
 include "db.php";
 
+/* ADMIN */
 $email = "admin@example.com";
-$password = password_hash("admin123", PASSWORD_DEFAULT); // hashed password
+$password = password_hash("admin123", PASSWORD_DEFAULT);
 $fullname = "Super Admin";
+$role = "admin";
 
-$sql = "INSERT INTO admins (email, password, fullname) VALUES ('$email', '$password', '$fullname')";
-if ($conn->query($sql) === TRUE) {
-    echo "Admin account created successfully!";
-} else {
-    echo "Error: " . $conn->error;
-}
+$conn->query("INSERT INTO admins (email,password,fullname,role)
+VALUES ('$email','$password','$fullname','$role')");
+
+
+/* REVIEWER */
+$email = "reviewer@example.com";
+$password = password_hash("reviewer123", PASSWORD_DEFAULT);
+$fullname = "Reviewer";
+$role = "reviewer";
+
+$conn->query("INSERT INTO admins (email,password,fullname,role)
+VALUES ('$email','$password','$fullname','$role')");
+
+echo "Admin and Reviewer accounts created!";
 $conn->close();
 ?>

@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Check admin users
+     /* ---------- CHECK ADMINS / REVIEWERS ---------- */
     $sql_admin = "SELECT * FROM admins WHERE email=?";
     $stmt_admin = $conn->prepare($sql_admin);
     $stmt_admin->bind_param("s", $email);
@@ -36,21 +36,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result_admin = $stmt_admin->get_result();
 
     if ($result_admin->num_rows == 1) {
+
         $admin = $result_admin->fetch_assoc();
+
         if (password_verify($password, $admin['password'])) {
+
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['fullname'] = $admin['fullname'];
-            $_SESSION['role'] = 'admin';
-            header("Location: admin_dashboard.php");
+            $_SESSION['role'] = $admin['role']; // IMPORTANT
+
+            /* ---------- REDIRECT BASED ON ROLE ---------- */
+
+            if ($admin['role'] == 'admin') {
+                header("Location: admin_dashboard.php");
+            }
+
+            if ($admin['role'] == 'reviewer') {
+                header("Location: reviewer_dashboard.php");
+            }
+
             exit();
+
         } else {
             echo "<h3>Invalid Password!</h3><a href='login.php'>Try Again</a>";
             exit();
         }
     }
 
-    // If neither found
+    /* ---------- IF USER NOT FOUND ---------- */
     echo "<h3>User not found!</h3><a href='login.php'>Try Again</a>";
-    $conn->close();
 }
+
+$conn->close();
 ?>

@@ -58,9 +58,6 @@ if(isset($_GET['delete_reviewer'])){
     $reviewer_message = "Reviewer deleted!";
 }
 
-/* -------- FETCH REVIEWERS -------- */
-$reviewers = $conn->query("SELECT * FROM admins WHERE role='reviewer' ORDER BY id DESC");
-
 /* -------- SEARCH -------- */
 $search = isset($_GET['search']) ? $_GET['search'] : "";
 
