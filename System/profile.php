@@ -38,19 +38,19 @@ $check_result = $conn->query($check_sql);
 ?>
 
     <?php if ($status == 'Pending'): ?>
-        <button class="btn status pending" disabled>
+        <span class="status-badge pending" disabled>
             ⏳ Waiting for Approval
-        </button>
+        </span>
 
     <?php elseif ($status == 'Approved'): ?>
-        <button class="btn status approved" disabled>
+        <span class="status-badge approved" disabled>
             ✅ Approved
-        </button>
+        </span>
 
     <?php elseif ($status == 'Rejected'): ?>
-        <button class="btn status rejected" disabled>
+        <span class="status-badge rejected" disabled>
             ❌ Rejected
-        </button>
+        </span>
     <?php endif; ?>
 
 <?php else: ?>
@@ -58,6 +58,10 @@ $check_result = $conn->query($check_sql);
         Apply for Scholarship
     </a>
 <?php endif; ?>
+
+<form action="logout.php" method="POST" style="display:inline;">
+    <button type="submit" class="btn-logout">Logout</button>
+</form>
 
 </div>
 
@@ -70,40 +74,46 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
 ?>
 
-<div class="profile-grid">
+    <div class="profile-layout">
 
-<div class="profile-card">
-<h4>Personal Information</h4>
-<p><strong>Full Name:</strong> <?php echo $row['fullname']; ?></p>
-<p><strong>Contact:</strong> <?php echo $row['contact']; ?></p>
-<p><strong>Email:</strong> <?php echo $row['email']; ?></p>
-<p><strong>Address:</strong> <?php echo $row['address']; ?></p>
-</div>
+        <!-- LEFT COLUMN -->
+        <div class="profile-left">
 
-<div class="profile-card">
-<h4>Education</h4>
-<p><strong>School:</strong> <?php echo $row['school']; ?></p>
-<p><strong>Course:</strong> <?php echo $row['course']; ?></p>
-<p><strong>Year Level:</strong> <?php echo $row['year_level']; ?></p>
-<p><strong>GPA:</strong> <?php echo $row['gpa']; ?></p>
-</div>
+        <div class="profile-card">
+        <h3>Personal & Family Information</h3>
+        <p><strong>Full Name:</strong> <?php echo $row['fullname']; ?></p>
+        <p><strong>Contact:</strong> <?php echo $row['contact']; ?></p>
+        <p><strong>Email:</strong> <?php echo $row['email']; ?></p>
+        <p><strong>Address:</strong> <?php echo $row['address']; ?></p>
+        <p><strong>Family Income:</strong> <?php echo $row['family_income']; ?></p>
+        </div>
 
-<div class="profile-card">
-<h4>Family Information</h4>
-<p><strong>Family Income:</strong> <?php echo $row['family_income']; ?></p>
-</div>
+        <div class="profile-card">
+        <h3>Education</h3>
+        <p><strong>School:</strong> <?php echo $row['school']; ?></p>
+        <p><strong>Course:</strong> <?php echo $row['course']; ?></p>
+        <p><strong>Year Level:</strong> <?php echo $row['year_level']; ?></p>
+        <p><strong>GPA:</strong> <?php echo $row['gpa']; ?></p>
+        </div>
 
-<div class="profile-card">
-<h4>Essay</h4>
-<p><?php echo $row['essay']; ?></p>
-</div>
+        </div>
 
-<div class="profile-card">
-<h4>Uploaded Document</h4>
-<p><?php echo $row['document']; ?></p>
-</div>
+        <!-- RIGHT COLUMN -->
+        <div class="profile-right">
 
-</div>
+        <div class="profile-card highlight">
+        <h3>Personal Essay</h3>
+        <p><?php echo $row['essay']; ?></p>
+        </div>
+
+        <div class="profile-card highlight">
+        <h3>Uploaded Document</h3>
+        <p><?php echo $row['document']; ?></p>
+        </div>
+
+        </div>
+
+    </div>
 
 <?php
 } else {
@@ -114,11 +124,6 @@ $conn->close();
 ?>
 
 </div>
-
-
-<form action="logout.php" method="POST" style="display:inline;">
-    <button type="submit" class="btn logout">Logout</button>
-</form>
 
 </body>
 </html>
