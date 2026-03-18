@@ -8,17 +8,20 @@
     <style>
         /* Additional enhancements compatible with existing CSS */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
-            position: relative;
-            overflow: hidden;
-            animation: gradientShift 15s ease infinite;
-            background-size: 200% 200%;
-        }
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url('uploads/3.png');
+    background-size: cover;     /* SHOW FULL IMAGE */
+    background-position: center;
+    background-repeat: no-repeat;
+
+    background-color: black; /* fills empty space */
+
+    position: relative;
+}
 
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
@@ -79,6 +82,7 @@
             animation: fadeInUp 0.8s ease 0.4s both;
             flex-wrap: wrap;
             justify-content: center;
+            margin-top: 200px;
         }
 
         .btn {
@@ -110,29 +114,31 @@
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: white;
+    color: #771111;
         }
 
         .btn-secondary {
-            background: transparent;
-            border: 2px solid white;
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+        transition: all 0.3s ease;
         }
 
-        .btn-secondary:hover {
-            background: white;
-            color: #1976d2;
+       .btn-secondary:hover {
+        background: white;
+        color: #771111;  /* text turns red */
         }
 
         /* Features section */
         .features {
             padding: 80px 20px;
-            background: #f5f5f5;
+            background: #771111;
             text-align: center;
         }
 
         .features h2 {
-            color: #1976d2;
+            color: #ffffff;
             font-size: 2.5rem;
             margin-bottom: 50px;
         }
@@ -164,7 +170,7 @@
         }
 
         .feature-card h3 {
-            color: #1976d2;
+            color: #771111;
             margin-bottom: 15px;
             font-size: 1.5rem;
         }
@@ -202,7 +208,7 @@
 
         /* Footer */
         footer {
-            background: #0d47a1;
+            background: #cea10e;
             color: white;
             text-align: center;
             padding: 30px;
@@ -231,15 +237,10 @@
 
     <!-- Hero Section -->
     <div class="hero">
-        <h1>College Scholarship Application System</h1>
-        <p>
-            Apply for scholarships in ScholarFlow! Register, fill out forms, upload documents,
-            and track your application status all in one seamless system.
-        </p>
-        
+
         <div class="btn-group">
-            <a href="login.php" class="btn">Login</a>
-            <a href="register.php" class="btn btn-secondary">Create Account</a>
+            <a href="login.php" class="btn btn-login">Login</a>
+    <a href="register.php" class="btn btn-secondary">Create Account</a>
         </div>
     </div>
 
