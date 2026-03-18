@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $result_user->fetch_assoc();
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
-            $_SESSION['fullname'] = $user['fullname'];
+            $_SESSION['username'] = $user['username'];  // Changed from fullname
+            $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = 'user';
             header("Location: profile.php");
             exit();
@@ -28,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-     /* ---------- CHECK ADMINS / REVIEWERS ---------- */
+    // Check admin users
     $sql_admin = "SELECT * FROM admins WHERE email=?";
     $stmt_admin = $conn->prepare($sql_admin);
     $stmt_admin->bind_param("s", $email);
@@ -36,36 +37,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result_admin = $stmt_admin->get_result();
 
     if ($result_admin->num_rows == 1) {
-
         $admin = $result_admin->fetch_assoc();
-
         if (password_verify($password, $admin['password'])) {
-
             $_SESSION['admin_id'] = $admin['id'];
-            $_SESSION['fullname'] = $admin['fullname'];
-            $_SESSION['role'] = $admin['role']; // IMPORTANT
-
-            /* ---------- REDIRECT BASED ON ROLE ---------- */
-
-            if ($admin['role'] == 'admin') {
-                header("Location: admin_dashboard.php");
-            }
-
-            if ($admin['role'] == 'reviewer') {
-                header("Location: reviewer_dashboard.php");
-            }
-
+            $_SESSION['username'] = $admin['fullname'];  // Keep fullname for admin or change to username
+            $_SESSION['email'] = $admin['email'];
+            $_SESSION['role'] = 'admin';
+            header("Location: admin_dashboard.php");
             exit();
-
         } else {
             echo "<h3>Invalid Password!</h3><a href='login.php'>Try Again</a>";
             exit();
         }
     }
 
-    /* ---------- IF USER NOT FOUND ---------- */
-    echo "<h3>User not found!</h3><a href='login.php'>Try Again</a>";
-}
+    // Check reviewers
+    $sql_reviewer = "SELECT * FROM reviewers WHERE email=?";
+    $stmt_reviewer = $conn->prepare($sql_reviewer);
+    $stmt_reviewer->bind_param("s", $email);
+    $stmt_reviewer->execute();
+    $result_reviewer = $stmt_reviewer->get_result();
 
-$conn->close();
+    if ($result_reviewer->num_rows == 1) {
+        $reviewer = $result_reviewer->fetch_assoc();
+        if (password_verify($password, $reviewer['password'])) {
+            $_SESSION['reviewer_id'] = $reviewer['id'];
+            $_SESSION['username'] = $reviewer['fullname'];  // Keep fullname for reviewer or change
+            $_SESSION['email'] = $reviewer['email'];
+            $_SESSION['role'] = 'reviewer';
+            header("Location: reviewer_dashboard.php");
+            exit();
+        } else {
+            echo "<h3>Invalid Password!</h3><a href='login.php'>Try Again</a>";
+            exit();
+        }
+    }
+
+    // If neither found
+    echo "<h3>User not found!</h3><a href='login.php'>Try Again</a>";
+    $conn->close();
+}
 ?>

@@ -10,11 +10,12 @@
 <script>
 function validateForm(e) {
 
-    const name = document.getElementById("fullname").value;
+    const name = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm_password").value;
 
-    if (name === "" || email === "" || password === "") {
+    if (name === "" || email === "" || password === "" || confirmPassword === "") {
         showToast("All fields are required!", "error");
         e.preventDefault();
         return false;
@@ -22,6 +23,12 @@ function validateForm(e) {
 
     if (password.length < 6) {
         showToast("Password must be at least 6 characters!", "error");
+        e.preventDefault();
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        showToast("Passwords do not match!", "error");
         e.preventDefault();
         return false;
     }
@@ -48,8 +55,8 @@ function validateForm(e) {
 <form id="regForm" action="process_register.php" method="POST">
 
 <div class="form-group">
-<label>Full Name</label>
-<input type="text" name="fullname" id="fullname" placeholder="Enter your full name">
+<label>User Name</label>
+<input type="text" name="username" id="username" placeholder="Enter your user name">
 </div>
 
 <div class="form-group">
@@ -72,6 +79,24 @@ function validateForm(e) {
 </button>
 </div>
 
+</div>
+
+<div class="form-group">
+    <label>Confirm Password</label>
+
+    <div class="password-wrapper">
+        <input type="password" id="confirm_password" placeholder="Confirm password">
+
+        <button type="button" class="toggle-password" onclick="toggleConfirmPassword()">
+            <svg id="eye-icon-confirm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7
+                -1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+        </button>
+    </div>
 </div>
 
 <button type="submit">Register</button>
@@ -124,8 +149,39 @@ d="M2.458 12C3.732 7.943 7.523 5
 `;
 
 }
-
 }
+
+function toggleConfirmPassword() {
+
+    const field = document.getElementById("confirm_password");
+    const icon = document.getElementById("eye-icon-confirm");
+
+    if (field.type === "password") {
+        field.type = "text";
+        icon.innerHTML = `
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7
+a9.97 9.97 0 011.563-3.029m5.858.908
+a3 3 0 114.243 4.243M9.878 9.878l4.242
+4.242M9.88 9.88l-3.29-3.29m7.532
+7.532l3.29 3.29M3 3l3.59 3.59"/>
+`; // open eye SVG
+    } else {
+        field.type = "password";
+        icon.innerHTML =  `
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+d="M2.458 12C3.732 7.943 7.523 5
+12 5c4.478 0 8.268 2.943
+9.542 7-1.274 4.057-5.064
+7-9.542 7-4.477
+0-8.268-2.943-9.542-7z"/>
+`; // closed eye SVG
+    }
+}
+
+
 
 
 /* FORM VALIDATION */

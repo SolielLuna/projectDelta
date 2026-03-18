@@ -9,15 +9,15 @@ $success = false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Sanitize inputs
-    $fullname = trim($_POST['fullname'] ?? '');
+    $username = trim($_POST['username'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     
     // Validation
-    if (empty($fullname)) {
-        $errors[] = "Full name is required";
-    } elseif (strlen($fullname) < 2 || strlen($fullname) > 100) {
-        $errors[] = "Full name must be between 2 and 100 characters";
+    if (empty($username)) {
+        $errors[] = "Username is required";
+    } elseif (strlen($username) < 3 || strlen($username) > 50) {
+        $errors[] = "Username must be between 3 and 50 characters";
     }
     
     if (empty($email)) {
@@ -28,12 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (empty($password)) {
         $errors[] = "Password is required";
-    } elseif (strlen($password) < 8) {
-        $errors[] = "Password must be at least 8 characters";
-    } elseif (!preg_match("/[A-Z]/", $password) || 
-              !preg_match("/[a-z]/", $password) || 
-              !preg_match("/[0-9]/", $password)) {
-        $errors[] = "Password must contain uppercase, lowercase, and numbers";
+    } elseif (strlen($password) < 6) {
+        $errors[] = "Password must be at least 6 characters";
     }
     
     // Check if email already exists
@@ -50,30 +46,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check_stmt->close();
     }
     
+    // Check if username already exists
+    if (empty($errors)) {
+        $check_sql = "SELECT id FROM users WHERE username = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("s", $username);
+        $check_stmt->execute();
+        $check_result = $check_stmt->get_result();
+        
+        if ($check_result->num_rows > 0) {
+            $errors[] = "Username already taken";
+        }
+        $check_stmt->close();
+    }
+    
     // If no errors, proceed with registration
     if (empty($errors)) {
         // Hash password securely
-        $hashed_password = password_hash($password, PASSWORD_ARGON2ID);
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         
         // Use prepared statement to prevent SQL injection
-        $sql = "INSERT INTO users (fullname, email, password, created_at) 
+        $sql = "INSERT INTO users (username, email, password, created_at) 
                 VALUES (?, ?, ?, NOW())";
         
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $fullname, $email, $hashed_password);
+        $stmt->bind_param("sss", $username, $email, $hashed_password);
         
         if ($stmt->execute()) {
             $success = true;
             
-            // Optional: Send welcome email or set session
+            // Optional: Set session
             session_start();
             $_SESSION['user_id'] = $stmt->insert_id;
-            $_SESSION['fullname'] = $fullname;
+            $_SESSION['username'] = $username;
             $_SESSION['email'] = $email;
             
-            // Redirect to dashboard (optional)
-            // header("Location: dashboard.php");
-            // exit();
         } else {
             $errors[] = "Registration failed. Please try again.";
         }
@@ -160,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="success-box">
         <div class="success-icon">✓</div>
         <h2>Registration Successful!</h2>
-        <p>Welcome to ScholarFlow, <?php echo htmlspecialchars($fullname); ?>!</p>
+        <p>Welcome to ScholarFlow, <?php echo htmlspecialchars($username); ?>!</p>
         <p>Your account has been created successfully.</p>
         <a href="profile.php" class="btn-home">Go to Profile</a>
         <br><br>

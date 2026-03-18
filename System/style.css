@@ -50,10 +50,7 @@ body {
     background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
-    border: 1px solid #bbdefb;
 }
-
 
 input {
     width: 100%;
@@ -367,6 +364,13 @@ table td {
    REGISTRATION FORM STYLES
    Compatible with existing style.css
    ============================================ */
+
+/* Form Container Enhancement */
+.container {
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
+    border: 1px solid #bbdefb;
+}
+
 .container h2 {
     color: #1976d2;
     text-align: center;
@@ -545,139 +549,4 @@ table td {
         right: 10px;
         min-width: auto;
     }
-}
-
-.profile-container {
-    width: 90%;              /* CHANGED from 350px */
-    max-width: 1200px;       /* allows full screen usage */
-    margin: 50px auto;
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-}
-
-/* PROFILE GRID (NEW) */
-.profile-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-}
-
-.profile-card {
-    background: #f5f9ff;
-    padding: 20px;
-    border-radius: 10px;
-    border-left: 5px solid #1976d2;
-}
-
-.profile-card h3 {
-    margin-top: 0;
-    color: #1976d2;
-}
-
-/* PROFILE ADVANCED LAYOUT */
-
-.profile-layout{
-    display:flex;
-    gap:30px;
-    align-items:flex-start;
-}
-
-/* LEFT SIDE */
-.profile-left{
-    width:35%;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-}
-
-/* RIGHT SIDE */
-.profile-right{
-    width:65%;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-}
-
-/* CARD DESIGN IMPROVEMENT */
-.profile-card{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
-    border-left:5px solid #1976d2;
-    transition:0.3s;
-}
-
-.profile-card:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-}
-
-.profile-card h3{
-    margin-top:0;
-    margin-bottom:15px;
-    color:#1976d2;
-}
-
-/* HIGHLIGHT RIGHT SIDE */
-.highlight{
-    border-left:6px solid #4caf50;
-    background:#f8fbff;
-}
-
-.highlight p{
-    line-height:1.7;
-    font-size:15px;
-}
-
-/* DOCUMENT STYLE */
-.profile-card p strong{
-    color:#333;
-}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-
-.profile-layout{
-    flex-direction:column;
-}
-
-.profile-left,
-.profile-right{
-    width:100%;
-}
-
-}
-
-
-.status-badge {
-    display: inline-block;      /* stay inline with text */
-    width: auto;                /* do not stretch */
-    padding: 10px 10px;           /* small padding */
-    font-size: 15px;            /* smaller font */
-    font-weight: 700;
-    border-radius: 7px;
-    line-height: 1;
-    vertical-align: middle;
-    color: white;
-    text-align: center;
-}
-
-/* Colors */
-.status-badge.pending{
-    background:#ff9800;
-}
-
-.status-badge.approved{
-    background:#4caf50;
-}
-
-.status-badge.rejected{
-    background:#d32f2f;
-}
-
-.btn-logout{
-    padding: 10px 10px;
-    border-radius: 5px;
 }

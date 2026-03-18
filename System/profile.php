@@ -12,10 +12,6 @@ $user_id = $_SESSION['user_id'];
 // Fetch application
 $sql = "SELECT * FROM applications WHERE user_id='$user_id'";
 $result = $conn->query($sql);
-
-// Check status
-$check_sql = "SELECT status FROM applications WHERE user_id='$user_id'";
-$check_result = $conn->query($check_sql);
 ?>
 
 <!DOCTYPE html>
@@ -26,9 +22,15 @@ $check_result = $conn->query($check_sql);
 </head>
 <body>
 
-<div class="profile-container">
+<div class="container">
+    <h2>Welcome, <?php echo $_SESSION['username']; ?></h2>  <!-- Changed from fullname -->
 
-<h2>Welcome, <?php echo $_SESSION['fullname']; ?></h2>
+    <!-- APPLY BUTTON -->
+    <?php
+// Check if user already applied
+$check_sql = "SELECT status FROM applications WHERE user_id='$user_id'";
+$check_result = $conn->query($check_sql);
+?>
 
 <div class="actions">
 
@@ -38,19 +40,20 @@ $check_result = $conn->query($check_sql);
 ?>
 
     <?php if ($status == 'Pending'): ?>
-        <span class="status-badge pending" disabled>
+        <button class="btn status pending" disabled>
             ⏳ Waiting for Approval
-        </span>
+        </button>
 
     <?php elseif ($status == 'Approved'): ?>
-        <span class="status-badge approved" disabled>
+        <button class="btn status approved" disabled>
             ✅ Approved
-        </span>
+        </button>
 
     <?php elseif ($status == 'Rejected'): ?>
-        <span class="status-badge rejected" disabled>
+        <button class="btn status rejected" disabled>
             ❌ Rejected
-        </span>
+        </button>
+
     <?php endif; ?>
 
 <?php else: ?>
@@ -60,68 +63,39 @@ $check_result = $conn->query($check_sql);
 <?php endif; ?>
 
 <form action="logout.php" method="POST" style="display:inline;">
-    <button type="submit" class="btn-logout">Logout</button>
+    <button type="submit" class="btn logout">Logout</button>
 </form>
-
 </div>
 
-<hr>
+    <hr>
 
-<h3>Your Application</h3>
+    <h3>Your Application</h3>
 
-<?php
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-?>
+    <?php
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
 
-    <div class="profile-layout">
+        echo "<p><strong>Username:</strong> {$row['username']}</p>";  // Changed from fullname
+        echo "<p><strong>Contact:</strong> {$row['contact']}</p>";
+        echo "<p><strong>Email:</strong> {$row['email']}</p>";
+        echo "<p><strong>Address:</strong> {$row['address']}</p>";
 
-        <!-- LEFT COLUMN -->
-        <div class="profile-left">
+        echo "<p><strong>School:</strong> {$row['school']}</p>";
+        echo "<p><strong>Course:</strong> {$row['course']}</p>";
+        echo "<p><strong>Year Level:</strong> {$row['year_level']}</p>";
+        echo "<p><strong>GPA:</strong> {$row['gpa']}</p>";
 
-        <div class="profile-card">
-        <h3>Personal & Family Information</h3>
-        <p><strong>Full Name:</strong> <?php echo $row['fullname']; ?></p>
-        <p><strong>Contact:</strong> <?php echo $row['contact']; ?></p>
-        <p><strong>Email:</strong> <?php echo $row['email']; ?></p>
-        <p><strong>Address:</strong> <?php echo $row['address']; ?></p>
-        <p><strong>Family Income:</strong> <?php echo $row['family_income']; ?></p>
-        </div>
+        echo "<p><strong>Family Income:</strong> {$row['family_income']}</p>";
 
-        <div class="profile-card">
-        <h3>Education</h3>
-        <p><strong>School:</strong> <?php echo $row['school']; ?></p>
-        <p><strong>Course:</strong> <?php echo $row['course']; ?></p>
-        <p><strong>Year Level:</strong> <?php echo $row['year_level']; ?></p>
-        <p><strong>GPA:</strong> <?php echo $row['gpa']; ?></p>
-        </div>
+        echo "<p><strong>Essay:</strong> {$row['essay']}</p>";
 
-        </div>
+        echo "<p><strong>Document:</strong> {$row['document']}</p>";
+    } else {
+        echo "<p>No application submitted yet.</p>";
+    }
 
-        <!-- RIGHT COLUMN -->
-        <div class="profile-right">
-
-        <div class="profile-card highlight">
-        <h3>Personal Essay</h3>
-        <p><?php echo $row['essay']; ?></p>
-        </div>
-
-        <div class="profile-card highlight">
-        <h3>Uploaded Document</h3>
-        <p><?php echo $row['document']; ?></p>
-        </div>
-
-        </div>
-
-    </div>
-
-<?php
-} else {
-    echo "<p>No application submitted yet.</p>";
-}
-
-$conn->close();
-?>
+    $conn->close();
+    ?>
 
 </div>
 
