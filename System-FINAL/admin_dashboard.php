@@ -42,21 +42,85 @@ if (isset($_GET['delete_user'])) {
     $messageType = "info";
 }
 
+// Edit User
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id'])) {
+    $id = intval($_POST['user_id']);
+    $username = $conn->real_escape_string($_POST['username']);
+    $email = $conn->real_escape_string($_POST['email']);
+    
+    // Check if password is being updated
+    if (!empty($_POST['password'])) {
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("UPDATE users SET username=?, email=?, password=? WHERE id=?");
+        $stmt->bind_param("sssi", $username, $email, $password, $id);
+    } else {
+        $stmt = $conn->prepare("UPDATE users SET username=?, email=? WHERE id=?");
+        $stmt->bind_param("ssi", $username, $email, $id);
+    }
+    
+    if ($stmt->execute()) {
+        $message = "User updated successfully!";
+        $messageType = "success";
+    } else {
+        $message = "Error updating user: " . $conn->error;
+        $messageType = "error";
+    }
+    $stmt->close();
+}
+
 // Edit Application
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['application_id'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['application_id']) && !isset($_POST['add_user']) && !isset($_POST['add_reviewer']) && !isset($_POST['reviewer_id'])) {
     $id = intval($_POST['application_id']);
+    
+    // Personal Information
     $last_name = $conn->real_escape_string($_POST['last_name']);
     $first_name = $conn->real_escape_string($_POST['first_name']);
-    $middle_name = $conn->real_escape_string($_POST['middle_name']);
+    $middle_name = $conn->real_escape_string($_POST['middle_name'] ?? '');
+    $suffix = $conn->real_escape_string($_POST['suffix'] ?? '');
+    $date_of_birth = $conn->real_escape_string($_POST['date_of_birth']);
+    $place_of_birth = $conn->real_escape_string($_POST['place_of_birth']);
+    $gender = $conn->real_escape_string($_POST['gender']);
+    $civil_status = $conn->real_escape_string($_POST['civil_status']);
+    $contact = $conn->real_escape_string($_POST['contact']);
+    $alt_contact = $conn->real_escape_string($_POST['alt_contact'] ?? '');
+    $email = $conn->real_escape_string($_POST['email'] ?? '');
+    $address = $conn->real_escape_string($_POST['address']);
+    $nationality = $conn->real_escape_string($_POST['nationality']);
+    $religion = $conn->real_escape_string($_POST['religion']);
+    
+    // Education
     $school = $conn->real_escape_string($_POST['school']);
     $course = $conn->real_escape_string($_POST['course']);
     $year_level = $conn->real_escape_string($_POST['year_level']);
     $gpa = $conn->real_escape_string($_POST['gpa']);
+    
+    // Financial
     $family_income = $conn->real_escape_string($_POST['family_income']);
+    
+    // Essays and Notes
+    $essay = $conn->real_escape_string($_POST['essay'] ?? '');
     $status = $conn->real_escape_string($_POST['status']);
     
-    $stmt = $conn->prepare("UPDATE applications SET last_name=?, first_name=?, middle_name=?, school=?, course=?, year_level=?, gpa=?, family_income=?, status=? WHERE id=?");
-    $stmt->bind_param("sssssssssi", $last_name, $first_name, $middle_name, $school, $course, $year_level, $gpa, $family_income, $status, $id);
+    $sql = "UPDATE applications SET 
+        last_name=?, first_name=?, middle_name=?, suffix=?,
+        date_of_birth=?, place_of_birth=?, gender=?, civil_status=?,
+        contact=?, alt_contact=?, email=?, address=?,
+        nationality=?, religion=?,
+        school=?, course=?, year_level=?, gpa=?,
+        family_income=?, essay=?, status=?
+        WHERE id=?";
+
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param("sssssssssssssssssssssi",
+        $last_name, $first_name, $middle_name, $suffix,
+        $date_of_birth, $place_of_birth, $gender, $civil_status,
+        $contact, $alt_contact, $email, $address,
+        $nationality, $religion,
+        $school, $course, $year_level, $gpa,
+        $family_income, $essay, $status,
+        $id
+    );
     
     if ($stmt->execute()) {
         $message = "Application updated successfully!";
@@ -99,8 +163,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reviewer_id']) && !iss
     $fullname = $conn->real_escape_string($_POST['fullname']);
     $email = $conn->real_escape_string($_POST['email']);
     
-    $stmt = $conn->prepare("UPDATE reviewers SET fullname=?, email=? WHERE id=?");
-    $stmt->bind_param("ssi", $fullname, $email, $id);
+    // Check if password is being updated
+    if (!empty($_POST['password'])) {
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("UPDATE reviewers SET fullname=?, email=?, password=? WHERE id=?");
+        $stmt->bind_param("sssi", $fullname, $email, $password, $id);
+    } else {
+        $stmt = $conn->prepare("UPDATE reviewers SET fullname=?, email=? WHERE id=?");
+        $stmt->bind_param("ssi", $fullname, $email, $id);
+    }
+    
     if ($stmt->execute()) {
         $message = "Reviewer updated successfully!";
         $messageType = "success";
@@ -607,6 +679,65 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
             flex-wrap: wrap;
         }
         
+        /* Password Field Styles */
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 45px !important;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            cursor: pointer;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            padding: 4px;
+        }
+        
+        .toggle-password:hover {
+            color: #1976d2;
+            background: rgba(25, 118, 210, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .toggle-password:active {
+            transform: scale(0.95);
+        }
+        
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .eye-icon, .eye-off-icon {
+            display: block;
+        }
+        
+        .password-match-error {
+            display: none;
+            margin-top: 5px;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
         /* Action Buttons - Following Reviewer Dashboard Design */
         .action-btn {
             padding: 8px 14px;
@@ -845,12 +976,14 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
             padding: 15px;
             border-radius: 8px;
             line-height: 1.6;
-            max-height: 200px;
+            max-height: fit-content;
+            width: 100%;
+            max-width: 100%;
             overflow-y: auto;
             border: 1px solid #e0e0e0;
             white-space: pre-wrap;
         }
-        
+                
         /* Form Styles */
         .form-group {
             margin-bottom: 15px;
@@ -1292,7 +1425,7 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
             <button class="close-btn" onclick="document.getElementById('addUserModal').classList.remove('active')">×</button>
         </div>
         <div class="modal-body">
-            <form method="POST">
+            <form method="POST" onsubmit="return validateUserPasswords()">
                 <input type="hidden" name="add_user" value="1">
                 <div class="form-group">
                     <label>Username</label>
@@ -1304,7 +1437,36 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" required minlength="6" placeholder="Minimum 6 characters">
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="add_user_password" required minlength="6" placeholder="Minimum 6 characters">
+                        <span class="toggle-password" onclick="togglePassword('add_user_password', this)">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" name="confirm_password" id="add_user_confirm_password" required minlength="6" placeholder="Re-enter password">
+                        <span class="toggle-password" onclick="togglePassword('add_user_confirm_password', this)">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </span>
+                    </div>
+                    <span class="password-match-error" id="user_password_error" style="color: #c62828; font-size: 12px; display: none;">❌ Passwords do not match</span>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" onclick="document.getElementById('addUserModal').classList.remove('active')">Cancel</button>
@@ -1316,6 +1478,7 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
 </div>
 
 <!-- Edit User Modal -->
+<!-- Edit User Modal -->
 <div class="modal" id="editUserModal">
     <div class="modal-content" style="max-width: 500px;">
         <div class="modal-header">
@@ -1323,7 +1486,7 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
             <button class="close-btn" onclick="document.getElementById('editUserModal').classList.remove('active')">×</button>
         </div>
         <div class="modal-body">
-            <form method="POST">
+            <form method="POST" onsubmit="return validateEditUserPasswords()">
                 <input type="hidden" name="user_id" id="edit_user_id">
                 
                 <div class="form-group">
@@ -1334,6 +1497,41 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" name="email" id="edit_user_email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>New Password <small style="color: #999; font-weight: normal;">(Leave blank to keep current)</small></label>
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="edit_user_password" minlength="6" placeholder="Enter new password (optional)">
+                        <span class="toggle-password" onclick="togglePassword('edit_user_password', this)">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" name="confirm_password" id="edit_user_confirm_password" minlength="6" placeholder="Re-enter new password">
+                        <span class="toggle-password" onclick="togglePassword('edit_user_confirm_password', this)">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </span>
+                    </div>
+                    <span class="password-match-error" id="edit_user_password_error" style="color: #c62828; font-size: 12px; display: none;">❌ Passwords do not match</span>
                 </div>
 
                 <div class="form-actions">
@@ -1353,7 +1551,7 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
             <button class="close-btn" onclick="document.getElementById('addReviewerModal').classList.remove('active')">×</button>
         </div>
         <div class="modal-body">
-            <form method="POST">
+            <form method="POST" onsubmit="return validateReviewerPasswords()">
                 <input type="hidden" name="add_reviewer" value="1">
                 <div class="form-group">
                     <label>Full Name</label>
@@ -1365,7 +1563,36 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" required minlength="6" placeholder="Minimum 6 characters">
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="add_reviewer_password" required minlength="6" placeholder="Minimum 6 characters">
+                        <span class="toggle-password" onclick="togglePassword('add_reviewer_password', this)">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" name="confirm_password" id="add_reviewer_confirm_password" required minlength="6" placeholder="Re-enter password">
+                        <span class="toggle-password" onclick="togglePassword('add_reviewer_confirm_password', this)">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </span>
+                    </div>
+                    <span class="password-match-error" id="reviewer_password_error" style="color: #c62828; font-size: 12px; display: none;">❌ Passwords do not match</span>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" onclick="document.getElementById('addReviewerModal').classList.remove('active')">Cancel</button>
@@ -1384,7 +1611,7 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
             <button class="close-btn" onclick="document.getElementById('editReviewerModal').classList.remove('active')">×</button>
         </div>
         <div class="modal-body">
-            <form method="POST">
+            <form method="POST" onsubmit="return validateEditReviewerPasswords()">
                 <input type="hidden" name="reviewer_id" id="edit_reviewer_id">
                 <div class="form-group">
                     <label>Full Name</label>
@@ -1393,6 +1620,39 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" name="email" id="edit_reviewer_email" required>
+                </div>
+                <div class="form-group">
+                    <label>New Password <small style="color: #999; font-weight: normal;">(Leave blank to keep current)</small></label>
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="edit_reviewer_password" minlength="6" placeholder="Enter new password (optional)">
+                        <span class="toggle-password" onclick="togglePassword('edit_reviewer_password', this)">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" name="confirm_password" id="edit_reviewer_confirm_password" minlength="6" placeholder="Re-enter new password">
+                        <span class="toggle-password" onclick="togglePassword('edit_reviewer_confirm_password', this)">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </span>
+                    </div>
+                    <span class="password-match-error" id="edit_reviewer_password_error" style="color: #c62828; font-size: 12px; display: none;">❌ Passwords do not match</span>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" onclick="document.getElementById('editReviewerModal').classList.remove('active')">Cancel</button>
@@ -1405,14 +1665,19 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
 
 <!-- Edit Application Modal -->
 <div class="modal" id="editApplicationModal">
-    <div class="modal-content" style="max-width: 700px;">
+    <div class="modal-content" style="max-width: 1000px; max-height: 90vh; overflow-y: auto;">
         <div class="modal-header">
-            <h2>✏️ Edit Application</h2>
+            <h2>✏️ Edit Full Application</h2>
             <button class="close-btn" onclick="document.getElementById('editApplicationModal').classList.remove('active')">×</button>
         </div>
         <div class="modal-body">
             <form method="POST">
                 <input type="hidden" name="application_id" id="edit_app_id">
+                
+                <!-- Personal Information Section -->
+                <h4 style="color: #1976d2; margin: 20px 0 15px 0; padding-bottom: 8px; border-bottom: 2px solid #e3f2fd; display: flex; align-items: center; gap: 8px;">
+                    👤 Personal Information
+                </h4>
                 <div class="detail-grid">
                     <div class="form-group">
                         <label>Last Name</label>
@@ -1427,11 +1692,71 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                         <input type="text" name="middle_name" id="edit_app_middle_name">
                     </div>
                     <div class="form-group">
-                        <label>School</label>
+                        <label>Suffix (Jr., Sr., III, etc.)</label>
+                        <input type="text" name="suffix" id="edit_app_suffix">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" name="date_of_birth" id="edit_app_date_of_birth" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Place of Birth</label>
+                        <input type="text" name="place_of_birth" id="edit_app_place_of_birth" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="gender" id="edit_app_gender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Civil Status</label>
+                        <select name="civil_status" id="edit_app_civil_status" required>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                            <option value="Separated">Separated</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input type="tel" name="contact" id="edit_app_contact" pattern="[0-9]{11}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Alternative Contact</label>
+                        <input type="tel" name="alt_contact" id="edit_app_alt_contact" pattern="[0-9]{11}">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" id="edit_app_email">
+                    </div>
+                    <div class="form-group">
+                        <label>Nationality</label>
+                        <input type="text" name="nationality" id="edit_app_nationality" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Complete Address</label>
+                        <textarea name="address" id="edit_app_address" rows="2" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Religion</label>
+                        <input type="text" name="religion" id="edit_app_religion" required>
+                    </div>
+                </div>
+
+                <!-- Education Section -->
+                <h4 style="color: #1976d2; margin: 30px 0 15px 0; padding-bottom: 8px; border-bottom: 2px solid #e3f2fd; display: flex; align-items: center; gap: 8px;">
+                    🎓 Educational Background
+                </h4>
+                <div class="detail-grid">
+                    <div class="form-group full-width">
+                        <label>School/University</label>
                         <input type="text" name="school" id="edit_app_school" required>
                     </div>
                     <div class="form-group">
-                        <label>Course</label>
+                        <label>Course/Program</label>
                         <input type="text" name="course" id="edit_app_course" required>
                     </div>
                     <div class="form-group">
@@ -1445,11 +1770,18 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>GPA</label>
+                        <label>GPA / GWA</label>
                         <input type="number" step="0.01" min="1.0" max="5.0" name="gpa" id="edit_app_gpa" required>
                     </div>
+                </div>
+
+                <!-- Financial Section -->
+                <h4 style="color: #1976d2; margin: 30px 0 15px 0; padding-bottom: 8px; border-bottom: 2px solid #e3f2fd; display: flex; align-items: center; gap: 8px;">
+                    💰 Financial Information
+                </h4>
+                <div class="detail-grid">
                     <div class="form-group">
-                        <label>Family Income</label>
+                        <label>Annual Family Income</label>
                         <select name="family_income" id="edit_app_family_income" required>
                             <option value="Below 100,000">Below ₱100,000</option>
                             <option value="100,000 - 200,000">₱100,000 - ₱200,000</option>
@@ -1458,8 +1790,26 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                             <option value="Above 500,000">Above ₱500,000</option>
                         </select>
                     </div>
+                </div>
+
+                <!-- Essay Section -->
+                <h4 style="color: #1976d2; margin: 30px 0 15px 0; padding-bottom: 8px; border-bottom: 2px solid #e3f2fd; display: flex; align-items: center; gap: 8px;">
+                    ✍️ Essays
+                </h4>
+                <div class="detail-grid">
                     <div class="form-group full-width">
-                        <label>Status</label>
+                        <label>Personal Essay</label>
+                        <textarea name="essay" id="edit_app_essay" rows="4" placeholder="Why do you deserve this scholarship?"></textarea>
+                    </div>
+                </div>
+
+                <!-- Reviewer Notes Section (Admin Only) -->
+                <h4 style="color: #1976d2; margin: 30px 0 15px 0; padding-bottom: 8px; border-bottom: 2px solid #e3f2fd; display: flex; align-items: center; gap: 8px;">
+                    🔍 Administrative Notes
+                </h4>
+                <div class="detail-grid">
+                    <div class="form-group">
+                        <label>Application Status</label>
                         <select name="status" id="edit_app_status" required>
                             <option value="Pending">Pending</option>
                             <option value="Approved">Approved</option>
@@ -1467,9 +1817,10 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
                         </select>
                     </div>
                 </div>
+
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" onclick="document.getElementById('editApplicationModal').classList.remove('active')">Cancel</button>
-                    <button type="submit" class="btn-save">Save Changes</button>
+                    <button type="submit" class="btn-save">💾 Save All Changes</button>
                 </div>
             </form>
         </div>
@@ -1577,16 +1928,40 @@ function viewApplication(data) {
 
 // Edit Application Modal Functions
 function openEditApplicationModal(data) {
+    // Hidden field
     document.getElementById('edit_app_id').value = data.id;
+    
+    // Personal Info
     document.getElementById('edit_app_last_name').value = data.last_name || '';
     document.getElementById('edit_app_first_name').value = data.first_name || '';
     document.getElementById('edit_app_middle_name').value = data.middle_name || '';
+    document.getElementById('edit_app_suffix').value = data.suffix || '';
+    document.getElementById('edit_app_date_of_birth').value = data.date_of_birth || '';
+    document.getElementById('edit_app_place_of_birth').value = data.place_of_birth || '';
+    document.getElementById('edit_app_gender').value = data.gender || 'Male';
+    document.getElementById('edit_app_civil_status').value = data.civil_status || 'Single';
+    document.getElementById('edit_app_contact').value = data.contact || '';
+    document.getElementById('edit_app_alt_contact').value = data.alt_contact || '';
+    document.getElementById('edit_app_email').value = data.email || '';
+    document.getElementById('edit_app_address').value = data.address || '';
+    document.getElementById('edit_app_nationality').value = data.nationality || 'Filipino';
+    document.getElementById('edit_app_religion').value = data.religion || '';
+    
+    // Education
     document.getElementById('edit_app_school').value = data.school || '';
     document.getElementById('edit_app_course').value = data.course || '';
-    document.getElementById('edit_app_year_level').value = data.year_level || '';
+    document.getElementById('edit_app_year_level').value = data.year_level || '1st Year';
     document.getElementById('edit_app_gpa').value = data.gpa || '';
-    document.getElementById('edit_app_family_income').value = data.family_income || '';
+    
+    // Financial
+    document.getElementById('edit_app_family_income').value = data.family_income || 'Below 100,000';
+    
+    // Essays
+    document.getElementById('edit_app_essay').value = data.essay || '';
+    
+    // Admin fields
     document.getElementById('edit_app_status').value = data.status || 'Pending';
+    
     document.getElementById('editApplicationModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -1596,6 +1971,7 @@ function openEditUserModal(id, username, email) {
     document.getElementById('edit_user_id').value = id;
     document.getElementById('edit_user_username').value = username;
     document.getElementById('edit_user_email').value = email;
+    document.getElementById('edit_user_password').value = ''; // Clear password field
     document.getElementById('editUserModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -1605,16 +1981,94 @@ function openEditReviewerModal(id, fullname, email) {
     document.getElementById('edit_reviewer_id').value = id;
     document.getElementById('edit_reviewer_fullname').value = fullname;
     document.getElementById('edit_reviewer_email').value = email;
+    document.getElementById('edit_reviewer_password').value = ''; // Clear password field
     document.getElementById('editReviewerModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
-
 // Close modals on outside click
 window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
         event.target.classList.remove('active');
         document.body.style.overflow = 'auto';
     }
+}
+
+function togglePassword(inputId, toggleBtn) {
+    const input = document.getElementById(inputId);
+    const eyeIcon = toggleBtn.querySelector('.eye-icon');
+    const eyeOffIcon = toggleBtn.querySelector('.eye-off-icon');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeIcon.style.display = 'none';
+        eyeOffIcon.style.display = 'block';
+    } else {
+        input.type = 'password';
+        eyeIcon.style.display = 'block';
+        eyeOffIcon.style.display = 'none';
+    }
+}
+
+function validateUserPasswords() {
+    const password = document.getElementById('add_user_password').value;
+    const confirmPassword = document.getElementById('add_user_confirm_password').value;
+    const errorElement = document.getElementById('user_password_error');
+    
+    if (password !== confirmPassword) {
+        errorElement.style.display = 'block';
+        return false;
+    }
+    errorElement.style.display = 'none';
+    return true;
+}
+
+function validateEditUserPasswords() {
+    const password = document.getElementById('edit_user_password').value;
+    const confirmPassword = document.getElementById('edit_user_confirm_password').value;
+    const errorElement = document.getElementById('edit_user_password_error');
+    
+    if (password === '' && confirmPassword === '') {
+        errorElement.style.display = 'none';
+        return true;
+    }
+    
+    if (password !== confirmPassword) {
+        errorElement.style.display = 'block';
+        return false;
+    }
+    errorElement.style.display = 'none';
+    return true;
+}
+
+function validateReviewerPasswords() {
+    const password = document.getElementById('add_reviewer_password').value;
+    const confirmPassword = document.getElementById('add_reviewer_confirm_password').value;
+    const errorElement = document.getElementById('reviewer_password_error');
+    
+    if (password !== confirmPassword) {
+        errorElement.style.display = 'block';
+        return false;
+    }
+    errorElement.style.display = 'none';
+    return true;
+}
+
+function validateEditReviewerPasswords() {
+    const password = document.getElementById('edit_reviewer_password').value;
+    const confirmPassword = document.getElementById('edit_reviewer_confirm_password').value;
+    const errorElement = document.getElementById('edit_reviewer_password_error');
+    
+    if (password === '' && confirmPassword === '') {
+        errorElement.style.display = 'none';
+        return true;
+    }
+    
+    if (password !== confirmPassword) {
+        errorElement.style.display = 'block';
+        return false;
+    }
+    errorElement.style.display = 'none';
+    return true;
 }
 
 // Close on Escape key
