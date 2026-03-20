@@ -67,20 +67,20 @@ button {
 }
 
 button:hover {
-    background: #771111;
+    background: #1e88e5;
 }
 
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background: #771111;
+    background: #1976d2;
     color: white;
     text-decoration: none;
     border-radius: 5px;
 }
 
 .btn:hover {
-    background: #771111;
+    background: #0d47a1;
 }
 
 textarea {
@@ -239,20 +239,20 @@ table td {
 }
 .topnav {
     width: 100%;
-    max-width: 100vw; /* ensures full viewport width */
-    background: linear-gradient(90deg, #1976d2, #42a5f5);
+    max-width: 100vw;
+    background: #771111;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px; /* adjust spacing as needed */
+    padding: 0 20px;
     height: 90px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
-    box-sizing: border-box; /* ensures padding doesn't overflow */
+    box-sizing: border-box;
 }
 
 .nav-left {
@@ -286,7 +286,7 @@ table td {
 }
 
 .logout-btn {
-    background: #0d47a1;
+    background: #771111;
     padding: 8px 15px;
     border-radius: 5px;
     color: white;
@@ -295,7 +295,7 @@ table td {
 }
 
 .logout-btn:hover {
-    background: #08306b;
+    background: #771111;
 }
 .main {
     margin-top: 90px;
@@ -366,17 +366,14 @@ table td {
    ============================================ */
 
 /* Form Container Enhancement */
-
 .container {
-    width: 100%;
-    max-width: 520px;
-    padding: 40px;
-    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.15);
+    border: 1px solid #bbdefb;
 }
 
 .container h2 {
-    color: #1976d2;
-    text-align: center;
+    color: #771111;
+    text-align: left;
     margin-bottom: 25px;
     font-size: 24px;
 }
@@ -551,5 +548,115 @@ table td {
         left: 10px;
         right: 10px;
         min-width: auto;
+    }
+}
+
+/* ============================================
+   process_register.php & process_application.php
+   ============================================ */
+   /* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* BODY */
+body {
+    background: #f4f6f9;
+    color: #333;
+}
+
+/* CONTAINER */
+.container,
+.message-container {
+    max-width: 500px;
+    margin: 80px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+/* HEADINGS */
+h1, h2, h3 {
+    margin-bottom: 15px;
+    color: #1976d2;
+}
+
+/* SUCCESS BOX */
+.success-box {
+    border: 1px solid #4caf50;
+    background: #e8f5e9;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+.success-icon {
+    font-size: 50px;
+    color: #4caf50;
+    margin-bottom: 10px;
+}
+
+/* ERROR BOX */
+.error-box {
+    border: 1px solid #f44336;
+    background: #ffebee;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.error-box ul {
+    padding-left: 20px;
+    color: #c62828;
+}
+
+/* BUTTONS */
+.btn,
+.btn-home {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 25px;
+    background: #1976d2;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover,
+.btn-home:hover {
+    background: #0d47a1;
+}
+
+/* LINKS */
+a {
+    color: #1976d2;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* SMALL TEXT */
+.small-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .container,
+    .message-container {
+        margin: 40px 15px;
+        padding: 20px;
     }
 }

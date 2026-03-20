@@ -7,23 +7,23 @@
     <title>Register - Scholarship System</title>
     <link rel="stylesheet" href="style.css">
     <style>
-      body {
+       body {
     margin: 0;
     height: 100vh;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     
-    background: url('uploads/5.png') center/cover no-repeat;
+    background: url('images/4.png') center/cover no-repeat;
 }
 
 .container {
     width: 100%;
-    max-width: 500px;
-    margin-right: 190px; 
+    max-width: 550px;
+    margin-right: 70px; 
     
     background: #fff;
-    padding: 40px;
+    padding: 19px;
     border-radius: 25px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
@@ -55,6 +55,10 @@ button:hover {
 .form-footer a:hover {
     color: #ddaa02; 
     text-decoration: underline; 
+}
+.form-group label {
+    text-align: left;
+    display: block;
 }
     </style>
 

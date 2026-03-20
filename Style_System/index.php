@@ -29,7 +29,7 @@
     justify-content: center;
     align-items: center;
 
-    background-image: url('uploads/3.png');
+    background-image: url('images/1.png');
     background-size: cover;    
     background-position: center;
     background-repeat: no-repeat;
@@ -119,7 +119,7 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
+            background: rgba(247, 0, 0, 0.3);
             transform: translate(-50%, -50%);
             transition: width 0.6s, height 0.6s;
         }
@@ -133,7 +133,16 @@
             background: white;
     color: #771111;
         }
+        .btn-login {
+            background: #771111;
+            color: #ffffff;
+       }
 
+    .btn-login:hover {
+    background: white;
+    color: #771111;
+    }
+        
         .btn-secondary {
         background: transparent;
         border: 2px solid white;

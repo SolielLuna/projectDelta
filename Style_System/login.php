@@ -13,13 +13,13 @@
     justify-content: flex-end;
     align-items: center;
     
-    background: url('uploads/5.png') center/cover no-repeat;
+    background: url('images/4.png') center/cover no-repeat;
 }
 
 .container {
     width: 100%;
     max-width: 500px;
-    margin-right: 190px; 
+    margin-right: 110px; 
     
     background: #fff;
     padding: 40px;
@@ -55,7 +55,10 @@ button:hover {
     color: #ddaa02; 
     text-decoration: underline; 
 }
-
+.form-group label {
+    text-align: left;
+    display: block;
+}
     </style>
 
     <script>
