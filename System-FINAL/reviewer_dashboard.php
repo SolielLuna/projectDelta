@@ -73,14 +73,14 @@ if (isset($_GET['delete'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['application_id'])) {
     $id = intval($_POST['application_id']);
     $status = $conn->real_escape_string($_POST['status']);
-    $review_notes = isset($_POST['review_notes']) ? $conn->real_escape_string($_POST['review_notes']) : '';
     
     $reviewer_id = $_SESSION['reviewer_id'];
     $reviewer_name = $_SESSION['username'];
     $reviewed_at = date('Y-m-d H:i:s');
     
-    $stmt = $conn->prepare("UPDATE applications SET status=?, review_notes=?, reviewer_id=?, reviewer_name=?, reviewed_at=? WHERE id=?");
-    $stmt->bind_param("ssissi", $status, $review_notes, $reviewer_id, $reviewer_name, $reviewed_at, $id);
+    $essay = isset($_POST['essay']) ? $conn->real_escape_string($_POST['essay']) : '';
+    $stmt = $conn->prepare("UPDATE applications SET status=?, essay=?, reviewer_id=?, reviewer_name=?, reviewed_at=? WHERE id=?");
+    $stmt->bind_param("ssissi", $status, $essay, $reviewer_id, $reviewer_name, $reviewed_at, $id);
     
     if ($stmt->execute()) {
         $message = "Application updated successfully!";
@@ -913,7 +913,7 @@ $myReviews = $conn->query("SELECT COUNT(*) as count FROM applications WHERE revi
                     </div>
                     <div class="form-group full-width">
                         <label>Personal Statement / Essay</label>
-                        <textarea id="edit-essay" rows="4" disabled></textarea>
+                        <textarea name="essay" id="edit-essay" rows="4"></textarea>
                     </div>
 
                     <!-- Reviewer editable fields -->
@@ -924,11 +924,6 @@ $myReviews = $conn->query("SELECT COUNT(*) as count FROM applications WHERE revi
                             <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option>
                         </select>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label>Reviewer Notes</label>
-                        <textarea name="review_notes" id="edit-review-notes" rows="4" placeholder="Add your review notes here"></textarea>
                     </div>
                 </div>
 
@@ -998,8 +993,6 @@ $myReviews = $conn->query("SELECT COUNT(*) as count FROM applications WHERE revi
         document.getElementById('view-income').textContent = data.family_income || '-';
         document.getElementById('view-essay').textContent = data.essay || 'No essay provided';
         document.getElementById('view-status').innerHTML = '<span class="status-badge status-' + data.status.toLowerCase() + '">' + data.status + '</span>';
-        document.getElementById('view-reviewer').textContent = data.reviewer_name || 'Not reviewed yet';
-        document.getElementById('view-reviewed-at').textContent = data.reviewed_at ? new Date(data.reviewed_at).toLocaleDateString() : '-';
         document.getElementById('view-submitted').textContent = new Date(data.created_at).toLocaleDateString();
         
         if (data.document) {
@@ -1044,7 +1037,6 @@ $myReviews = $conn->query("SELECT COUNT(*) as count FROM applications WHERE revi
 
     // Editable reviewer fields
     document.getElementById('edit-status').value = data.status || 'Pending';
-    document.getElementById('edit-review-notes').value = data.review_notes || '';
 
     document.getElementById('editModal').classList.add('active');
     document.body.style.overflow = 'hidden';
