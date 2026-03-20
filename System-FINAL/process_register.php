@@ -94,6 +94,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Registration - ScholarFlow</title>
     <link rel="stylesheet" href="style.css">
     <style>
+    body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-bottom: 10px; /* adds space from bottom */
+    
+    background: url('images/7.png') center/cover no-repeat;
+}
         .message-container {
             max-width: 500px;
             margin: 100px auto;
@@ -103,12 +113,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         .success-box {
             background: #e8f5e9;
-            border: 2px solid #4caf50;
+            border: 2px solid #ddaa02;
             border-radius: 10px;
             padding: 30px;
             animation: slideIn 0.5s ease;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-        
+        .success-box h2{
+         font-size: 38px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 25px;
+        color: #771111;       
+        }
+            
+
+
         .error-box {
             background: #ffebee;
             border: 2px solid #f44336;
@@ -134,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: inline-block;
             margin-top: 20px;
             padding: 12px 30px;
-            background: #1976d2;
+            background: #771111;
             color: white;
             text-decoration: none;
             border-radius: 25px;
@@ -147,8 +172,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
     </style>
 </head>

@@ -6,24 +6,38 @@
     <title>ScholarFlow - College Scholarship Application System</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        
+    html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.hero {
+    width: 100%;
+}
+
+.topnav {
+    width: 100%;
+    max-width: 100%;
+}
         /* Additional enhancements compatible with existing CSS */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-            background: 
-                linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
-                url('images/scholarship-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+    background-image: url('images/1.png');
+    background-size: cover;    
+    background-position: center;
+    background-repeat: no-repeat;
 
-            position: relative;
-            overflow: hidden;
-        }
+    background-color: black;
+
+    position: relative;
+}
 
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
@@ -84,6 +98,7 @@
             animation: fadeInUp 0.8s ease 0.4s both;
             flex-wrap: wrap;
             justify-content: center;
+            margin-top: 200px;
         }
 
         .btn {
@@ -104,7 +119,7 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
+            background: rgba(247, 0, 0, 0.3);
             transform: translate(-50%, -50%);
             transition: width 0.6s, height 0.6s;
         }
@@ -115,29 +130,40 @@
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
             background: white;
-            color: #1976d2;
+    color: #771111;
+        }
+        .btn-login {
+            background: #771111;
+            color: #ffffff;
+       }
+
+    .btn-login:hover {
+    background: white;
+    color: #771111;
+    }
+        
+        .btn-secondary {
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+        transition: all 0.3s ease;
+        }
+
+       .btn-secondary:hover {
+        background: white;
+        color: #771111;  /* text turns red */
         }
 
         /* Features section */
         .features {
             padding: 80px 20px;
-            background: #f5f5f5;
+            background: #771111;
             text-align: center;
         }
 
         .features h2 {
-            color: #1976d2;
+            color: #ffffff;
             font-size: 2.5rem;
             margin-bottom: 50px;
         }
@@ -207,7 +233,7 @@
 
         /* Footer */
         footer {
-            background: #0d47a1;
+            background: #cea10e;
             color: white;
             text-align: center;
             padding: 30px;
@@ -236,15 +262,10 @@
 
     <!-- Hero Section -->
     <div class="hero">
-        <h1>College Scholarship Application System</h1>
-        <p>
-            Apply for scholarships in ScholarFlow! Register, fill out forms, upload documents,
-            and track your application status all in one seamless system.
-        </p>
-        
+
         <div class="btn-group">
-            <a href="login.php" class="btn">Login</a>
-            <a href="register.php" class="btn btn-secondary">Create Account</a>
+            <a href="login.php" class="btn btn-login">Login</a>
+    <a href="register.php" class="btn btn-secondary">Create Account</a>
         </div>
     </div>
 

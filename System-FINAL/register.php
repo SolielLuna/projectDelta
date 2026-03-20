@@ -6,6 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Scholarship System</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    
+    background: url('images/4.png') center/cover no-repeat;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin-right: 110px; 
+    
+    background: #fff;
+    padding: 10px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.container h2 {
+    font-size: 38px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #771111;
+}
+button {
+    width: 100%;
+    padding: 10px;
+    background: #771111;
+    color: white;
+    border: none;
+}
+button:hover {
+    background-color: #ddaa02;
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+}
+.form-footer a {
+    color: #771111; 
+    text-decoration: none; 
+    font-weight: bold; 
+    margin-top: 1px;
+    text-align: center;
+    
+}
+
+.form-footer a:hover {
+    color: #ddaa02; 
+    text-decoration: underline; 
+}
+    </style>
+
 
 <script>
 function validateForm(e) {

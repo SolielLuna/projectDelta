@@ -128,17 +128,38 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
     <title>Profile</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background: url('images/8.png') center/cover no-repeat;
+        }
+        .container {
+            width: 570px;
+            height: 570px;
+            overflow-y: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        
         .profile-section {
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
         .profile-section h4 {
-            color: #1976d2;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            color: #771111;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #e3f2fd;
             display: flex;
             align-items: center;
@@ -146,11 +167,11 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         }
         .info-row {
             display: flex;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .info-label {
             font-weight: bold;
-            width: 180px;
+            width: 160px;
             color: #555;
         }
         .info-value {
@@ -163,7 +184,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 25px;
             font-weight: 600;
             text-decoration: none;
@@ -201,7 +222,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 10px 25px;
             border-radius: 25px;
             font-weight: 600;
             cursor: pointer;
@@ -214,11 +235,11 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             font-weight: bold;
             color: #555;
         }
@@ -226,7 +247,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 2px solid #e3f2fd;
             border-radius: 5px;
             font-size: 14px;
@@ -236,7 +257,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #1976d2;
+            border-color: #771111;
         }
         .form-group input:read-only {
             background: #f5f5f5;
@@ -245,16 +266,16 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
         .form-grid .full-width {
             grid-column: 1 / -1;
         }
         
         .alert {
-            padding: 15px;
+            padding: 12px;
             border-radius: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .alert-success {
             background: #e8f5e9;
@@ -268,7 +289,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         }
         .alert-info {
             background: #e3f2fd;
-            color: #1976d2;
+            color: #771111;
             border: 1px solid #90caf9;
         }
         
@@ -277,14 +298,14 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             position: relative;
             border: 2px dashed #bbdefb;
             border-radius: 10px;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             transition: all 0.3s;
             cursor: pointer;
             background: #fafafa;
         }
         .file-upload:hover {
-            border-color: #1976d2;
+            border-color: #771111;
             background: #e3f2fd;
         }
         .file-upload input[type="file"] {
@@ -297,26 +318,26 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             cursor: pointer;
         }
         .file-upload-icon {
-            font-size: 40px;
-            color: #1976d2;
-            margin-bottom: 10px;
+            font-size: 32px;
+            color: #771111;
+            margin-bottom: 8px;
         }
         .file-name {
-            margin-top: 10px;
+            margin-top: 8px;
             color: #666;
             font-size: 14px;
         }
         .current-file {
             background: #e3f2fd;
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 5px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
         .current-file a {
-            color: #1976d2;
+            color: #771111;
             text-decoration: none;
             font-weight: 600;
         }
@@ -329,10 +350,10 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
         }
         .status-pending {
             background: #fff3e0;
@@ -362,49 +383,49 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         /* Empty State Styles */
         .empty-state {
             text-align: center;
-            padding: 60px 40px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e3f2fd 100%);
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #fffd88 0%, #fffd88 100%);
             border-radius: 15px;
-            border: 2px dashed #bbdefb;
-            margin: 30px 0;
+            border: 2px dashed #771111;
+            margin: 15px 0;
         }
         .empty-state-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 60px;
+            margin-bottom: 15px;
             opacity: 0.7;
         }
         .empty-state h3 {
-            color: #1976d2;
+            color: #771111;
             margin-bottom: 10px;
-            font-size: 24px;
+            font-size: 22px;
         }
         .empty-state p {
             color: #666;
-            margin-bottom: 25px;
-            font-size: 16px;
+            margin-bottom: 20px;
+            font-size: 15px;
             line-height: 1.5;
         }
         .btn-apply-large {
-            background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, #771111 0%, #a10d0d 100%);
             color: white;
-            padding: 15px 40px;
+            padding: 12px 35px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
             display: inline-flex;
             align-items: center;
             gap: 10px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+            box-shadow: 0 4px 15px #771111;
         }
         .btn-apply-large:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+            box-shadow: 0 6px 20px #771111;
         }
         .btn-apply-large svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
         }
         
         /* Welcome Header */
@@ -412,26 +433,50 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
         }
         .welcome-header h2 {
             margin: 0;
-            color: #1976d2;
+            color: #771111;
+            font-size: 24px;
         }
         .user-badge {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            padding: 8px 20px;
+            background: linear-gradient(135deg, #fffd88 0%, #fffd88 100%);
+            padding: 6px 16px;
             border-radius: 20px;
-            color: #1976d2;
+            color: #771111;
             font-weight: 600;
+            font-size: 13px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
-        @media (max-width: 600px) {
+        h3 {
+            font-size: 18px;
+            margin: 12px 0;
+            color: #333;
+        }
+        
+        hr {
+            margin: 12px 0;
+            border: none;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .actions {
+            margin-bottom: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 90vw;
+                height: 90vw;
+                max-width: 500px;
+                max-height: 500px;
+            }
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -440,21 +485,21 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             }
             .info-label {
                 width: 100%;
-                margin-bottom: 5px;
+                margin-bottom: 4px;
             }
             .welcome-header {
                 flex-direction: column;
                 text-align: center;
             }
-            .empty-state {
-                padding: 40px 20px;
+            .welcome-header h2 {
+                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="container" style="max-width: 900px;">
+<div class="container">
     
     <!-- Improved Welcome Header -->
     <div class="welcome-header">
@@ -474,7 +519,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
 
     <!-- Status Display -->
     <?php if ($application): ?>
-        <div style="margin-bottom: 20px;">
+        <div style="margin-bottom: 12px;">
             <span class="status-badge status-<?php echo strtolower($status); ?>">
                 <?php 
                 $icons = ['Pending' => '⏳', 'Approved' => '✅', 'Rejected' => '❌'];
@@ -505,7 +550,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         <?php endif; ?>
         
         <form action="logout.php" method="POST" style="display:inline;">
-            <button type="submit" class="btn logout">Logout</button>
+            <button type="submit" class="logout-btn">Logout</button>
         </form>
     </div>
 
@@ -653,7 +698,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
                     <h4>✍️ Personal Statement</h4>
                     <div class="form-group">
                         <label>Why do you deserve this scholarship? <span class="required">*</span></label>
-                        <textarea name="essay" rows="6" maxlength="1000" required><?php echo e($application['essay']); ?></textarea>
+                        <textarea name="essay" rows="4" maxlength="1000" required><?php echo e($application['essay']); ?></textarea>
                     </div>
                 </div>
 

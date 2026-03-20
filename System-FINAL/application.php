@@ -32,6 +32,10 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
     <title>Apply for Scholarship - ScholarFlow</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        body {
+        background: #771111;
+        }
+
         .application-container {
             max-width: 800px;
             margin: 40px auto;
@@ -73,7 +77,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             height: 44px;
             border-radius: 50%;
             background: #e3f2fd;
-            color: #1976d2;
+            color: #771111;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -83,9 +87,9 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         }
 
         .progress-step.active .step-number {
-            background: #1976d2;
+            background: #771111;
             color: white;
-            border-color: #1976d2;
+            border-color: #DDAA02;
         }
 
         .progress-step.completed .step-number {
@@ -102,7 +106,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         }
 
         .progress-step.active .step-label {
-            color: #1976d2;
+            color: #771111;
             font-weight: 600;
         }
 
@@ -121,7 +125,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         }
 
         .section-header {
-            color: #1976d2;
+            color: #771111;
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 2px solid #e3f2fd;
@@ -173,7 +177,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #1976d2;
+            border-color: #771111;
             box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
         }
 
@@ -199,7 +203,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         }
 
         .file-upload:hover {
-            border-color: #1976d2;
+            border-color: #771111;
             background: #e3f2fd;
         }
 
@@ -215,7 +219,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
 
         .file-upload-icon {
             font-size: 40px;
-            color: #1976d2;
+            color: #771111;
             margin-bottom: 10px;
         }
 
@@ -253,14 +257,14 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         }
 
         .btn-next {
-            background: #1976d2;
+            background: #771111;
             color: white;
         }
 
         .btn-next:hover {
-            background: #0d47a1;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.3);
+            background-color: #ddaa02;
+            cursor: pointer; 
+            transition: background-color 0.3s ease;
         }
 
         .btn-submit {
@@ -338,7 +342,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         </div>
     <?php endif; ?>
 
-    <h2 style="text-align: center; color: #1976d2; margin-bottom: 10px;">Scholarship Application</h2>
+    <h2 style="text-align: center; color: #771111; margin-bottom: 10px;">Scholarship Application</h2>
     <p style="text-align: center; color: #666; margin-bottom: 30px;">Complete all sections to submit your application</p>
 
     <!-- Progress Bar -->
