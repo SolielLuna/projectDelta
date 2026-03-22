@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <?php
-$bg_image = $success ? 'images/7.png' : 'images/8.png';
+$bg_image = $success ? 'images/7.png' : 'images/9.png';
 ?>
 
 <!DOCTYPE html>
