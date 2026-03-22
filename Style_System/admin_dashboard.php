@@ -1168,7 +1168,7 @@ $rejectedCount = $conn->query("SELECT COUNT(*) as count FROM applications WHERE 
             border-radius: 100px;
         }
 
-        .nav-right a: hover {
+        .nav-right a:hover {
             background: #ddaa01;
             
         }

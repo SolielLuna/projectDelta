@@ -86,6 +86,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<?php
+$bg_image = $success ? 'images/7.png' : 'images/8.png';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,13 +104,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         display: flex;
         justify-content: flex-end;
         align-items: flex-end;
-        padding-bottom: 10px; /* adds space from bottom */
-    
-        <?php if ($success): ?>
-            background: url('images/7.png') center/cover no-repeat;
-        <?php else: ?>
-            background: url('images/8.png') center/cover no-repeat;
-        <?php endif; ?>
+        padding-bottom: 10px;
+        background: url('<?php echo $bg_image; ?>') center/cover no-repeat;
     }
         .message-container {
             max-width: 500px;
