@@ -29,7 +29,7 @@
     justify-content: center;
     align-items: center;
 
-    background-image: url('images/1.png');
+    background-image: url('images/1.PNG');
     background-size: cover;    
     background-position: center;
     background-repeat: no-repeat;

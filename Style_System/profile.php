@@ -148,7 +148,6 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
-        
         .profile-section {
             background: white;
             padding: 20px;
@@ -212,11 +211,24 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         }
         
         .btn-cancel {
-            background: #757575;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
             color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
         }
+
         .btn-cancel:hover {
-            background: #616161;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+            background: linear-gradient(135deg, #ffa375 0%, #f57c00 100%);
         }
         .btn-save {
             background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
@@ -290,7 +302,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         .alert-info {
             background: #e3f2fd;
             color: #771111;
-            border: 1px solid #90caf9;
+            border: 1px solid #8fffa5;
         }
         
         /* File Upload Styles */
@@ -348,7 +360,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         /* Status Badge */
         .status-badge {
             display: inline-flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 8px;
             padding: 6px 14px;
             border-radius: 20px;
@@ -427,6 +439,25 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
             width: 18px;
             height: 18px;
         }
+
+        /* Simple Logout Button Hover */
+        .logout-btn {
+            background: #771111;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
+            background: #d32f2f;
+        }
         
         /* Welcome Header */
         .welcome-header {
@@ -468,6 +499,23 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         
         .actions {
             margin-bottom: 12px;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .actions .status-badge {
+            margin: 0 !important;
+        }
+
+        .actions form {
+            margin: 0;
+            margin-left: 100%; /* Pushes logout to the right */
         }
         
         @media (max-width: 768px) {
@@ -521,39 +569,32 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1' && $can_edit;
         <div class="alert alert-error">✗ <?php echo $error_message; ?></div>
     <?php endif; ?>
 
-    <!-- Status Display -->
-    <?php if ($application): ?>
-        <div style="margin-bottom: 12px;">
-            <span class="status-badge status-<?php echo strtolower($status); ?>">
+   <div class="actions" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <?php if ($application): ?>
+            <!-- Status Badge -->
+            <span class="status-badge status-<?php echo strtolower($status); ?>" style="margin: 0;">
                 <?php 
                 $icons = ['Pending' => '⏳', 'Approved' => '✅', 'Rejected' => '❌'];
                 echo $icons[$status] . ' ' . $status;
                 ?>
             </span>
-        </div>
-    <?php endif; ?>
-
-    <div class="actions">
-        <?php if (!$application): ?>
-            <!-- No apply button here anymore, moved to empty state -->
-        <?php else: ?>
+            
             <?php if ($can_edit): ?>
                 <?php if (!$edit_mode): ?>
                     <a href="profile.php?edit=1" class="btn-edit">
                         <span>✏️</span> Edit Profile
                     </a>
                 <?php else: ?>
-                    <a href="profile.php" class="btn btn-cancel">← Cancel Editing</a>
+                    <a href="profile.php" class="btn btn-cancel" style="display: inline-flex; align-items: center; height: 29px; padding: 0 20px; margin: 0; text-decoration: none; line-height: 1;">❌ Cancel Editing</a>
                 <?php endif; ?>
             <?php else: ?>
-                <button class="btn-edit disabled" disabled title="Cannot edit approved applications">
+                <button class="btn-edit disabled" disabled title="Cannot edit approved applications" style="display: inline-flex; align-items: center; height: 29px; padding: 0 20px; margin: 0; text-decoration: none; line-height: 1;">
                     <span>🔒</span> Edit Locked
                 </button>
-                <div class="edit-disabled-reason">Editing is disabled for approved applications</div>
             <?php endif; ?>
         <?php endif; ?>
         
-        <form action="logout.php" method="POST" style="display:inline;">
+        <form action="logout.php" method="POST" style="display:inline; margin: 0;">
             <button type="submit" class="logout-btn">Logout</button>
         </form>
     </div>

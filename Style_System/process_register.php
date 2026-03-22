@@ -95,15 +95,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style.css">
     <style>
     body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    padding-bottom: 10px; /* adds space from bottom */
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        padding-bottom: 10px; /* adds space from bottom */
     
-    background: url('images/7.png') center/cover no-repeat;
-}
+        <?php if ($success): ?>
+            background: url('images/7.png') center/cover no-repeat;
+        <?php else: ?>
+            background: url('images/8.png') center/cover no-repeat;
+        <?php endif; ?>
+    }
         .message-container {
             max-width: 500px;
             margin: 100px auto;
@@ -131,8 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         margin-bottom: 25px;
         color: #771111;       
         }
-            
-
 
         .error-box {
             background: #ffebee;
@@ -167,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         .btn-home:hover {
-            background: #0d47a1;
+            background: #cea10e;
             transform: translateY(-2px);
         }
         
@@ -178,6 +180,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
+
+
 
 <div class="message-container">
 
