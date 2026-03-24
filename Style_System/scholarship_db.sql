@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2026 at 09:12 PM
+-- Generation Time: Mar 24, 2026 at 06:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -69,10 +69,8 @@ CREATE TABLE `applications` (
   `course` varchar(100) DEFAULT NULL,
   `year_level` varchar(20) DEFAULT NULL,
   `gpa` varchar(10) DEFAULT NULL,
-  `parent_occupation` varchar(100) DEFAULT NULL,
   `family_income` varchar(50) DEFAULT NULL,
   `essay` text DEFAULT NULL,
-  `review_notes` text DEFAULT NULL,
   `goals` text DEFAULT NULL,
   `document` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -86,8 +84,8 @@ CREATE TABLE `applications` (
 -- Dumping data for table `applications`
 --
 
-INSERT INTO `applications` (`id`, `user_id`, `username`, `last_name`, `first_name`, `middle_name`, `suffix`, `date_of_birth`, `place_of_birth`, `gender`, `civil_status`, `contact`, `alt_contact`, `email`, `address`, `nationality`, `religion`, `school`, `course`, `year_level`, `gpa`, `parent_occupation`, `family_income`, `essay`, `review_notes`, `goals`, `document`, `created_at`, `status`, `reviewer_id`, `reviewer_name`, `reviewed_at`) VALUES
-(6, NULL, 'Villa', 'Villalon', 'Aerll Kian', 'Manggas', '', '2005-07-19', 'Cebu City', 'Male', 'Single', '09109466040', '', 'villa@gmail.com', 'GXR3+M3W', 'Filipino', 'Roman Catholic', 'Cebu Technological University - Danao Campus', 'BSIT', '2nd Year', '1.0', NULL, 'Below 100,000', 'Because I need it.', '', NULL, 'AP 3 - ASSIGNMENT #2.pdf', '2026-03-18 16:28:51', 'Approved', 1, 'Reviewer', '2026-03-18 20:15:39');
+INSERT INTO `applications` (`id`, `user_id`, `username`, `last_name`, `first_name`, `middle_name`, `suffix`, `date_of_birth`, `place_of_birth`, `gender`, `civil_status`, `contact`, `alt_contact`, `email`, `address`, `nationality`, `religion`, `school`, `course`, `year_level`, `gpa`, `family_income`, `essay`, `goals`, `document`, `created_at`, `status`, `reviewer_id`, `reviewer_name`, `reviewed_at`) VALUES
+(6, NULL, 'Villa', 'Villalon', 'Aerll Kian', 'Manggas', '', '2005-07-19', 'Cebu City', 'Male', 'Single', '09109466040', '', 'villa@gmail.com', 'GXR3+M3W', 'Filipino', 'Roman Catholic', 'Cebu Technological University - Danao Campus', 'BSIT', '2nd Year', '1.0', 'Below 100,000', 'Because I need it.', NULL, 'AP 3 - ASSIGNMENT #2.pdf', '2026-03-18 16:28:51', 'Approved', 1, 'Reviewer', '2026-03-18 20:15:39');
 
 -- --------------------------------------------------------
 
@@ -121,16 +119,15 @@ CREATE TABLE `users` (
   `username` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` enum('Pending','Approved','Rejected') DEFAULT 'Pending'
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`, `status`) VALUES
-(10, 'Villa', 'aerllkianvillalon@gmail.com', '$2y$10$14QFsU4Z4WRSlGbDdlD3AuTJpvIE3uKjZKkWKvjhNegz.jpLNyCna', '2026-03-18 19:32:27', 'Pending');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
+(10, 'Villa', 'aerllkianvillalon@gmail.com', '$2y$10$14QFsU4Z4WRSlGbDdlD3AuTJpvIE3uKjZKkWKvjhNegz.jpLNyCna', '2026-03-18 19:32:27');
 
 --
 -- Indexes for dumped tables
